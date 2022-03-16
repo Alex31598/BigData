@@ -1,0 +1,93 @@
+Copiar en la ruta “/home/cloudera/ejercicios” la carpeta “wordcount” y su contenido.
+
+
+
+unzip wordcount.zip
+
+
+
+3.Examinar el contenido de los tres ficheros java para asegurarnos de que están correctos.a.Prestar atención los parámetros de entrada de cada clase, los tipos de datos de entrada, salida e intermedios, etc.
+
+
+
+4.La carpeta wordcount, como hemos visto, ya contienelos javas compiladosy el jar creado, por lo que solo tenemos que ejecutar elsubmit del job hadoop usando nuestro fichero JAR para contar las ocurrencias de palabras contenidas en nuestra carpeta “shakespeare”. Nuestro jar contiene las clases java compiladas dentro de un paquete llamado “solutions”, por eso se le llama de este modo.
+
+
+
+
+
+hadoop jar wc.jar solution.WordCount shakespeare /user/cloudera/wordcounts
+
+
+
+5.Una vez ejecutado, probamos a ejecutarlo nuevamentea.¿Qué ocurre?Ya existe
+
+
+
+6.Comprobamos el resultado de nuestro MapReducea.
+
+
+
+hadoop fs -ls /user/cloudera/wordcounts
+
+
+
+
+
+8.Observamos el contenido del ficheroa.
+
+
+
+hadoop fs -cat /user/cloudera/wordcounts/part-r-00000 | less
+
+
+
+b.Escribiendo la letra “q” salimos del comando less
+
+
+
+
+
+
+
+9.Volvemos a ejecutar el job de nuevoa.
+
+
+
+hadoop jar wc.jar solution.WordCount shakespeare/poems /user/cloudera/pwords
+
+
+
+
+
+10.Borramos la salida producida por nuestros jobs
+
+
+
+hadoop fs -rm -r /user/cloudera/wordcounts /user/cloudera/pwords
+
+
+
+11.Ejecutamos nuevamente nuestro job
+
+
+
+hadoop jar wc.jar solution.WordCount shakespeare /user/cloudera/count
+
+
+
+
+
+12.Mientras se ejecuta, en otro terminal ejecutamos lo siguiente, para ver la lista de Jobs que se están ejecutandoa.
+
+
+
+mapred job -list
+
+
+
+13.Si conocemos la id de un job, lo podemos matar. Recordemos que cerrando un terminal no se mata el job. Para ello, ejecutamos en otra terminal lo siguientea.
+
+
+
+mapred job -kill <jobid>

@@ -1,0 +1,60 @@
+Ejercicio 1:
+Escribe el siguiente comando
+
+hadoop fs
+
+Muesta las opciones de configuración
+
+Ejercicio 2:
+Escribe:
+
+hadoop fs -ls /
+
+Muestra el contenido del directorio root en HDFS
+
+Ejercicio 3:
+Crea un directorio local de trabajohadoop
+Por ejemplo /home/cloudera/ejercicios
+
+mkdir ejercicios
+
+rmdir ejercios (si está vacio)
+
+rm -r #Para borrar en cascada
+
+cp /home/cloudera/ejecicios/shakespeare.tar.gz /home/cloudera #para copiar
+
+Descomprimir el archivo:
+
+tar zxvf shakespeare.tar.gz
+
+Copiamos el archivo 
+
+hadoop fs -put shakespeare /user/cloudera/shakespeare
+
+Listamos el contenido
+
+hadoop fs -ls /user/clouder
+
+Observa el contenido de la carpeta shakespeare en hdf
+
+hadoop fs -ls /user/cloudera/shakespeare
+
+Borra la subcarpeta “glossary” de la carpeta shakespeare en HDFS
+
+hadoop fs -rm /user/cloudera/shakespeare/glossary
+
+
+Comprueba que se ha borrado
+
+hadoop fs -ls /user/cloudera/shakespeare
+
+Lista las primeras 50 últimas líneas de la subcarpeta “histories”. Puedes usar los comando “cat” y “tail” (head -> primeras)
+
+hadoop fs -cat /user/cloudera/shakespeare/histories | tail -n 50
+
+
+Copia al Sistema de ficheros local de tu MV el fichero “poems” en la ruta /home/cloudera/ejercicios/shakespeare/shakepoems
+
+
+hadoop fs -get /user/cloudera/shakespeare/poems /home/cloudera/ejercicios/shakespeare/poems
