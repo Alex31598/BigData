@@ -1,0 +1,135 @@
+Ejercicios Hive
+1. Entrar en Hive
+a.
+
+hive
+
+
+2. Modificar la propiedad correspondiente para mostrar por pantalla las cabeceras de las 
+tablas
+a. “set hive.cli.print.header=true;”
+
+HECHO
+
+3. Crear una base de datos llamada “cursohivedb”
+a.
+
+CREATE DATABASE cursohivedb;
+
+4. Situarnos en la base de datos recién creada para trabajar con ella
+a.
+
+USE cursohivedb;
+
+
+5. Comprobar que la base de datos está vacía
+a.
+
+SHOW TABLES;
+
+6. Crear una tabla llamada “iris” en nuestra base de datos que contenga 5 columnas 
+(s_length float,s_width float,p_length float,p_width float,clase string) cuyos campos 
+estén separados por comas (ROW FORMAT DELIMITED FIELDS TERMINATED BY ',')
+
+CREATE TABLE iris(
+	s_length FLOAT, s_width FLOAT,
+	p_length FLOAT, p_width FLOAT,
+	clase STRING)
+ROW FORMAT DELIMITED FIELDS TERMINATED BY ','
+
+7.Comprobar que la tabla se ha creado y el tipado de sus columnas
+
+a. SHOW TABLES;
+
+b. DESCRIBE iris;
+
+8. Importar el fichero “iris_completo.txt” al local file system del cluster en la carpeta 
+/home/cloudera/ejercicios/ejercicios_HIVE
+
+cp shared_folder/iris_completo.txt ejercicios/ejercicios_HIVE/
+
+9. Copiar el fichero a HDFS en la ruta /user/cloudera/hive. Reailzar las acciones 
+necesarias
+
+a.hadoop fs -mkdir /user/cloudera/hive
+
+b. hadoop fs -put /home/cloudera/ejercicios/ejercicios_HIVE/iris_completo.txt /user/cloudera/hive
+
+
+10. Comprueba que el fichero está en la ruta en HDFS indicada
+
+hdfs dfs -ls /user/cloudera/hive
+
+11. Importa el fichero en la tabla iris que acabamos de crear desde HDFS 
+a.
+
+LOAD DATA INPATH '/user/cloudera/hive/iris_completo.txt' INTO TABLE iris;
+
+12. Comprobar que la table tiene datos
+
+SELECT * FROM iris LIMIT 10;
+
+13. Mostrar las 5 primeras filas de la tabla iris
+a.
+
+SELECT * FROM iris LIMIT 5;
+
+14. Mostrar solo aquellas filas cuyo s_length sea mayor que 5. Observad que se ejecuta un 
+MapReduce y que el tiempo de ejecución es un poco mayor
+a.
+SELECT * FROM iris WHERE s_length >5;
+
+15. Seleccionar la media de s_width agrupados por clase. Observad que ahora el tiempo 
+de ejecución aumenta considerablemente.
+a
+
+SELECT clase, AVG(s_width) FROM iris GROUP BY clase;  
+
+
+
+16. Pregunta: vemos que aparece un valor NULL como resultado en la query anterior. ¿Por 
+qué? ¿cómo los eliminarías?
+
+PORQUE NO HEMOS DEFINIDO COMO SE VAN A LLAMAR ESAS COLUMNAS. SOLUCION:
+
+SELECT clase AS clase, AVG(s_width) AS media FROM iris GROUP BY clase; 
+
+17. Insertar en la tabla la siguiente fila (1.0,3.2,4.3,5.7,"Iris-virginica")
+a.
+
+INSERT INTO iris VALUES (1.0,3.2,4.3,5.7,"Iris-virginica");
+
+18. Contar el número de ocurrencias de cada clase
+a.
+SELECT clase, COUNT(clase) AS cantidad FROM iris GROUP BY clase; 
+
+19. Seleccionar las clases que tengan más de 45 ocurrencias
+a.
+select clase, count(*) from iris group by clase having count(*) >45;
+
+
+20. Utilizando la función LEAD, ejecutar una query que devuelva la clase, p_length y el 
+LEAD de p_length con Offset=1 y Default_Value =0, particionado por clase y ordenado 
+por p_length.
+
+SELECT clase, p_length, LEAD(p_length,1,0) OVER (ORDER BY p_length) AS Lead FROM iris;
+
+
+21. Utilizando funciones de ventanas, seleccionar la clase, p_length, s_length, p_width, el 
+número de valores distintos de p_length en todo el dataset, el valor máximo de 
+s_length por clase y la media de p_width por clase, ordenado por clase y s_length de 
+manera descendente. 
+a.
+
+SELECT clase, p_length, s_length, p_width, DISTINCT(p_length), MAX(s_length) OVER ()
+
+
+
+
+
+
+
+
+
+
+
